@@ -1,8 +1,10 @@
 # Chapter 4 - EDA
 
+library(aplpack)
 library(RSADBE)
 library(lattice)
 library(LearnEDA)
+
 data("TheWALL")
 str(TheWALL)
 
@@ -35,7 +37,6 @@ IQR(TheWALL$Score[TheWALL$HA_Ind == "Home"])
 
 # Stem-and-Leaf Plot
 
-library(aplpack)
 x <- c(12,22,42,13,27,46,25,52)
 stem(x)
 
@@ -62,4 +63,28 @@ data(octane)
 lval(octane$Method_1)
 lval(octane$Method_2)
 
+# Data re-expression
+hydroelectric <- c(14,18,28,26,36,30,30,34,30,43,45,54,52,60,68, + 68,61,75,76,70,76,86,90,96,100,100,100,100,100,100,110,112,
+                   + 118,110,124,130,135,135,130,175,165,140,250,280,204,200,270,
+                   + 40,320,330,468,400,518,540,595,600,810,810,1728,1400,1743,2700)
+sort(hydroelectric)
+summary(hydroelectric)
+hist(hydroelectric)
+hist(hydroelectric[hydroelectric<800], breaks = 13)
+stem.leaf(hydroelectric)
+stem.leaf(hydroelectric, unit = 1)
 
+max(hydroelectric) / min(hydroelectric)
+sort(round(log(hydroelectric,10),2))
+stem.leaf(round(log(hydroelectric,10),2), unit = 0.01)
+hist(round(log(hydroelectric,10),2), breaks = 20)
+histogram(round(log(hydroelectric,10),2), breaks = 20)
+
+# Bagplot
+data("Gasoline")
+panel.bagplot <- function(x,y) {
+  require(aplpack)
+  bagplot(x,y, verbose = FALSE,  create.plot = TRUE, add = TRUE)
+}
+pairs(Gasoline[-19, -c(1,4,5,13)],
+      upper.panel = panel.bagplot)
